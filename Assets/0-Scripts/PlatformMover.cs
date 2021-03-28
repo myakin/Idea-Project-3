@@ -5,12 +5,9 @@ using UnityEngine;
 public class PlatformMover : MonoBehaviour {
     public float moveSpeed = 0.1f;
     public Transform outOfViewPosDummy, movePosDummy;
-    public bool stopScrolling;
-    public PlayerController controller;
-   
     void Update()
     {
-        if (!stopScrolling)
+        if (FindObjectOfType<PlayerController>().isDead==false)
         {
             transform.position += Vector3.left * moveSpeed;
         }        

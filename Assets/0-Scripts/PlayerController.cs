@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour {
         }
         if (isDead)
         {
+            
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
                 SceneManager.LoadScene(currentScene);
