@@ -7,9 +7,10 @@ namespace IdeaProject3 {
         public float moveSpeed = 0.01f;
 
         private void Update() {
-            transform.position += -transform.right * moveSpeed;
+            if (!GameManager.instance.player.GetComponent<PlayerController>().isDead) {
+                transform.position += -transform.right * moveSpeed;
+            }
+            
         }
-
-        
     }
 }
