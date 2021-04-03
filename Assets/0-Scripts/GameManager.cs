@@ -35,25 +35,33 @@ namespace IdeaProject3 {
         
         public void GenerateSceneCompositionObject() {
             indexToGenerate = Random.Range(0, numberOfCompositionPrefabs[currentLevel]);
-            GameObject obj = Instantiate(Resources.Load("SceneCompositionObject_Level1_Variation"+indexToGenerate) as GameObject);
+            AddressablesManager.instance.SpawnObject("SceneCompositionObject_Level1_Variation"+indexToGenerate, new Vector3 ( 0, -200, 0), Quaternion.identity, null, 
+                delegate (GameObject obj)
+                {
+                    if (!obj.GetComponent<CompositionObjectGenerator>())
+                    {
+                        obj.AddComponent<CompositionObjectGenerator>();
+                        obj.GetComponent<CompositionObjectGenerator>().genrationPointDummy = obj.transform.Find("GenerationPositionDummy");
+                    }
+                    obj.GetComponent<CompositionObjectGenerator>().PositionCompositionObject(generationPositionDummy.position);
 
-            if (!obj.GetComponent<CompositionObjectGenerator>()) {
-                obj.AddComponent<CompositionObjectGenerator>();
-                obj.GetComponent<CompositionObjectGenerator>().genrationPointDummy = obj.transform.Find("GenerationPositionDummy");
-            }
-            obj.GetComponent<CompositionObjectGenerator>().PositionCompositionObject(generationPositionDummy.position);
+                    if (!obj.GetComponent<CompositionObjectDestroyer>())
+                    {
+                        obj.AddComponent<CompositionObjectDestroyer>();
+                        obj.GetComponent<CompositionObjectDestroyer>().destroyPositionDummy = obj.transform.Find("DestroyPositionDummy");
+                    }
+                    obj.GetComponent<CompositionObjectDestroyer>().SetDestructionPointX(destructionPositionDummy.position.x);
 
-            if (!obj.GetComponent<CompositionObjectDestroyer>()) {
-                obj.AddComponent<CompositionObjectDestroyer>();
-                obj.GetComponent<CompositionObjectDestroyer>().destroyPositionDummy = obj.transform.Find("DestroyPositionDummy");
-            }
-            obj.GetComponent<CompositionObjectDestroyer>().SetDestructionPointX(destructionPositionDummy.position.x);
+                    if (!obj.GetComponent<CompositionObjectNextCompositionObjectGenerationCriteria>())
+                    {
+                        obj.AddComponent<CompositionObjectNextCompositionObjectGenerationCriteria>();
+                        obj.GetComponent<CompositionObjectNextCompositionObjectGenerationCriteria>().nextgenerationPositionDummy = obj.transform.Find("NextGenerationDummy");
+                    }
+                    obj.GetComponent<CompositionObjectNextCompositionObjectGenerationCriteria>().SetGameManager(this);
+                }    
+            );
 
-            if (!obj.GetComponent<CompositionObjectNextCompositionObjectGenerationCriteria>()) {
-                obj.AddComponent<CompositionObjectNextCompositionObjectGenerationCriteria>();
-                obj.GetComponent<CompositionObjectNextCompositionObjectGenerationCriteria>().nextgenerationPositionDummy = obj.transform.Find("NextGenerationDummy");
-            }
-            obj.GetComponent<CompositionObjectNextCompositionObjectGenerationCriteria>().SetGameManager(this);
+            
             
         }
 
