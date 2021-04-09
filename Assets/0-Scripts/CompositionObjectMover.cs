@@ -4,13 +4,22 @@ using UnityEngine;
 
 namespace IdeaProject3 {
     public class CompositionObjectMover : MonoBehaviour {
-        public float moveSpeed = 0.01f;
+        public MoveSpeedSettings moveSpeedSettings;
+        private float moveSpeed;
+
+        private void Start() {
+            moveSpeed = moveSpeedSettings.speed;
+        }
 
         private void Update() {
             if (!GameManager.instance.player.GetComponent<PlayerController>().isDead) {
-                transform.position += -transform.right * moveSpeed;
+                transform.position += -transform.right * (moveSpeed * Time.deltaTime);
             }
             
+            if (Input.GetKeyDown(KeyCode.O)) {
+                moveSpeedSettings.IncreaseSpeed();
+                moveSpeed = moveSpeedSettings.speed;
+            }
         }
     }
 }

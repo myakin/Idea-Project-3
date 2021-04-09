@@ -28,9 +28,9 @@ namespace IdeaProject3 {
         private int indexToGenerate;
         private int currentLevel;
 
-        private void Start() {
-            GenerateSceneCompositionObject();
-        }
+        // private void Start() {
+        //     GenerateSceneCompositionObject();
+        // }
 
         
         public void GenerateSceneCompositionObject() {

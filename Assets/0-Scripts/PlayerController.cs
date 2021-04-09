@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using IdeaProject3;
 
 public class PlayerController : MonoBehaviour {
     public float antiGravityForceMagnitude = 10;
@@ -10,10 +11,13 @@ public class PlayerController : MonoBehaviour {
     private new Rigidbody2D rigidbody;
     private Animator animator;
     private string currentScene;
+
     private void Start() {
+        GameManager.instance.player = gameObject;
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         currentScene = SceneManager.GetActiveScene().name;
+        GameManager.instance.GenerateSceneCompositionObject();
     }
 
     private void Update() {
