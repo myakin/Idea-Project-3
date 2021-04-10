@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using IdeaProject3;
 
 public class PlayerController : MonoBehaviour {
+    public PlayerEvents playerEvents;
     public float antiGravityForceMagnitude = 10;
     public bool isDead;
 
@@ -12,12 +13,17 @@ public class PlayerController : MonoBehaviour {
     private Animator animator;
     private string currentScene;
 
+    private void OnDestroy() {
+        GameManager.instance.UnloadMainUI();
+    }
+
     private void Start() {
         GameManager.instance.player = gameObject;
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         currentScene = SceneManager.GetActiveScene().name;
         GameManager.instance.GenerateSceneCompositionObject();
+        GameManager.instance.LoadMainUI(playerEvents);
     }
 
     private void Update() {

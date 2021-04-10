@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.SceneManagement;
 
 public class AddressablesManager : MonoBehaviour {
     public static AddressablesManager instance;
@@ -95,4 +96,46 @@ public class AddressablesManager : MonoBehaviour {
             }
         }
     }
+
+
+    public delegate void PostSceneOperation();
+    private List<string> loadingScenes = new List<string>();
+    private List<string> loadedScenes = new List<string>();
+
+    public void LoadAddressableSceneAdditive(string key, PostSceneOperation onLoad, bool activateOnLoad = true) {
+        if (loadedScenes.Contains(key) || loadingScenes.Contains(key)) {
+            return;
+        }
+        loadingScenes.Add(key);
+
+        // solution 1
+        var op = Addressables.LoadSceneAsync (key, LoadSceneMode.Additive, activateOnLoad);
+        op.Completed += operation => {
+            // scene is already loaded, do some security registerations here
+            loadedScenes.Add(key);
+            loadingScenes.Remove(key);
+            onLoad();
+        };
+
+        // solution 2
+        // StartCoroutine(AdditiveSceneLoading(key, onLoad, activateOnLoad));
+    }
+    // private IEnumerator AdditiveSceneLoading(string key, PostSceneOperation onLoad, bool activateOnLoad = true) {
+    //     var op = AddressablesManager.LoadSceneAsync (key, LoadSceneMode.Additive, activateOnLoad);
+    //     while (!op.done) {
+    //         yield return null;
+    //     }
+    //     loadedScenes.Add(key);
+    //     loadingScenes.Remove(key);
+
+    //     onLoad();
+    // }
+
+    public void UnloadAddressableScene(string key, PostSceneOperation onUnload = null) {
+        if (loadedScenes.Contains(key)) {  
+            // TODO: run coroutine
+            loadedScenes.Remove(key);
+        }
+    }
+   
 }

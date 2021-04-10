@@ -28,9 +28,20 @@ namespace IdeaProject3 {
         private int indexToGenerate;
         private int currentLevel;
 
-        // private void Start() {
-        //     GenerateSceneCompositionObject();
-        // }
+        
+        public void LoadMainUI(PlayerEvents aPlayerEventsObject) {
+            AddressablesManager.instance.LoadAddressableSceneAdditive(
+                "MainUI",
+                delegate {
+                    // aPlayerEventsObject.ExecuteEventSubscribers();
+                    UIManager.instance.SetScore(0);
+                }
+            );
+        }
+
+        public void UnloadMainUI() {
+            AddressablesManager.instance.UnloadAddressableScene("MainUI");
+        }
 
         
         public void GenerateSceneCompositionObject() {
